@@ -1,0 +1,45 @@
+﻿namespace Bally;
+
+public record struct IndexWheelParams(double OuterRadius,
+                                      double InnerRadius,
+                                      int NumStops,
+                                      double NumCodes,
+                                      double MaxSlotDepth,
+                                      double MinSlotDepth,
+                                      double StartSlotDeviation,
+                                      double EndSlotDeviation,
+                                      double SlotRadius = 0.148,
+                                      double SlotArcRadius = 4.1875,
+                                      double SlotArcOriginX = 2.648,
+                                      double SlotArcOriginY = -4.167,
+                                      double IndexHoleRadius = 3.0 / 32,
+                                      double IndexHolePositionRadius = 1,
+                                      double FastenerHoleRadius = 7.0 / 64,
+                                      double FastenerHolePositionRadius = 5.0 / 4,
+                                      double CenterHoleRadius = 9.003 / 32)
+{
+    public static IndexWheelParams P484 => new(OuterRadius: 47.0 / 16,
+                                               InnerRadius: 43.5 / 16,
+                                               NumStops: 20,
+                                               NumCodes: 9,
+                                               MaxSlotDepth: 1.589,
+                                               MinSlotDepth: 2.719,
+                                               StartSlotDeviation: 0.02,
+                                               EndSlotDeviation: -0.116);
+    public static IndexWheelParams P584 => new(OuterRadius: 49.0 / 16,
+                                               InnerRadius: 47.0 / 16,
+                                               NumStops: 25,
+                                               NumCodes: 10,
+                                               MaxSlotDepth: 1.589,
+                                               MinSlotDepth: 2.859,
+                                               StartSlotDeviation: 0.015,
+                                               EndSlotDeviation: -0.116); 
+    public static IndexWheelParams P684 => new(OuterRadius: 49.0 / 16,
+                                               InnerRadius: 47.0 / 16,
+                                               NumStops: 22,
+                                               NumCodes: 10,
+                                               MaxSlotDepth: 1.589,
+                                               MinSlotDepth: 2.859,
+                                               StartSlotDeviation: 0.015,
+                                               EndSlotDeviation: -0.116);
+}
