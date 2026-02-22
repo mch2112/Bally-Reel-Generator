@@ -6,17 +6,21 @@ namespace Bally;
 [Flags]
 public enum WinCombo : int
 {
-    None        = 0,
-    OneCherry   = 1 << 0,
-    TwoCherries = 1 << 1,
-    Oranges     = 1 << 2,
-    Plums       = 1 << 3,
-    Bells       = 1 << 4,
-    Melons      = 1 << 5,
-    Bars        = 1 << 6,
-    AnyBars      = 1 << 7,
-    SingleBars   = 1 << 8,
-    DoubleBars   = 1 << 9,
-    TripleBars   = 1 << 10,
-    Sevens      = 1 << 11 /* keep this last */
+    None = 0,
+    OneCherry = 1,
+    TwoCherries = OneCherry << 1,
+    ThreeCherries = TwoCherries << 1,
+    Oranges = ThreeCherries << 1,
+    Plums = Oranges << 1,
+    Bells = Plums << 1,
+    Melons = Bells << 1,
+    Bars = Melons << 1,
+    AnyBars = Bars << 1,
+    SingleBars = AnyBars << 1,
+    DoubleBars = SingleBars << 1,
+    TripleBars = DoubleBars << 1,
+    OrangesNatural = TripleBars << 1,
+    PlumsNatural = OrangesNatural << 1,
+    BellsNatural = PlumsNatural << 1,
+    Sevens = BellsNatural << 1 /* keep this last */
 }

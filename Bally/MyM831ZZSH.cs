@@ -76,15 +76,14 @@ public class MyM831ZZSH : M831ZZSH
                              .Select(d => new MyM831ZZSH(d)).ToList();
         }
 
-        //var optimum = candidates.MinBy(m => Math.Abs(1 - m.PayoutPercent.Value)) ?? throw new NullReferenceException();
         var optimum = candidates.MinBy(m => symbolMapDiffCount(ootbSymbolMaps, m.Reels[0].SymbolMap, m.Reels[1].SymbolMap, m.Reels[2].SymbolMap));
 
         Console.WriteLine(optimum.GetInfo("OPTIMUM"));
 
-        ReelStripRenderer.GenerateReelStrips(Machine: optimum!,
-                                             NumCopies: 1,
-                                             SvgPath: Path.Combine(OutputWritePath, "reels-m831zzsh.svg"),
-                                             PngPath: Path.Combine(OutputWritePath, "reels-m831zzsh.png"));
+        new ReelStripRenderer().GenerateReelStrips(Machine: optimum!,
+                                                   NumCopies: 1,
+                                                   SvgPath: Path.Combine(OutputWritePath, "reels-m831zzsh.svg"),
+                                                   PngPath: Path.Combine(OutputWritePath, "reels-m831zzsh.png"));
 
         Console.WriteLine($"optimum requires rewiring {symbolMapDiffCount(ootbSymbolMaps, optimum.Reels[0].SymbolMap, optimum.Reels[1].SymbolMap, optimum.Reels[2].SymbolMap)} different paths.");
 

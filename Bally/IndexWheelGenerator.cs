@@ -21,7 +21,7 @@ public static class IndexWheelGenerator
                                 Enumerable.Range(0, Codes.Length).Max(i => Math.Sin((i + 0.5) * Math.PI * 2 / Codes.Length) * Params.OuterRadius))
                             * scale;
 
-        var path = GetPath(Codes, Params)
+        SvgPath path = GetPath(Codes, Params)
                     .WithItems(new Hole(Point.Empty, Params.CenterHoleRadius, false),
                                new Hole(new(0, Params.FastenerHolePositionRadius), Params.FastenerHoleRadius, false),
                                new Hole(new(0, -Params.FastenerHolePositionRadius), Params.FastenerHoleRadius, false),

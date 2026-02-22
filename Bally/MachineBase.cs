@@ -40,22 +40,35 @@ public abstract class MachineBase : IMachine
         => WinAmounts[GetResult(Stop1, Stop2, Stop3)];
     public string GetPayoutTable()
     {
-        var data = WinTypeCounts.Value
-                                .Select(kvp => new
-                                {
-                                    kvp.Key,
-                                    PerWin = WinAmounts[kvp.Key],
-                                    Count = kvp.Value,
-                                    TypeValue = kvp.Value * WinAmounts[kvp.Key]
-                                })
-                                .Where(x => x.TypeValue > 0)
-                                .OrderByDescending(x => x.PerWin)
-                                .ToArray();
+        var winInfo = WinTypeCounts.Value;
+        var data = winInfo.Select(kvp => new
+                          {
+                              kvp.Key,
+                              PerWin = WinAmounts[kvp.Key],
+                              Count = kvp.Value,
+                              TypeValue = kvp.Value * WinAmounts[kvp.Key]
+                          })
+                          .Where(x => x.TypeValue > 0)
+                          .OrderByDescending(x => x.PerWin)
+                          .ToArray();
 
-        return string.Join(Environment.NewLine,
-                           data.Select(win => $"{win.Key,-12} {win.PerWin,3} {win.Count,6:N0} {win.TypeValue,7:N0}"))
+        var ret = string.Join(Environment.NewLine,
+                           data.Select(win => $"{win.Key,-15} {win.PerWin,3} {win.Count,6:N0} {win.TypeValue,7:N0}"))
                + Environment.NewLine
-               + $"TOTAL            {data.Sum(x => x.Count),6:N0} {data.Sum(x => x.TypeValue),7:N0}";
+               + $"TOTAL               {data.Sum(x => x.Count),6:N0} {data.Sum(x => x.TypeValue),7:N0}";
+    
+        if (winInfo.ContainsKey(WinCombo.Oranges) && winInfo.ContainsKey(WinCombo.OrangesNatural))
+        {
+            ret += $"""
+                
+
+                Total Oranges:   {winInfo[WinCombo.Oranges] + winInfo[WinCombo.OrangesNatural],9:N0} {winInfo[WinCombo.Oranges] * WinAmounts[WinCombo.Oranges] + winInfo[WinCombo.OrangesNatural] * WinAmounts[WinCombo.OrangesNatural],7:N0}
+                Total Plums:     {winInfo[WinCombo.Plums] + winInfo[WinCombo.PlumsNatural],9:N0} {winInfo[WinCombo.Plums] * WinAmounts[WinCombo.Plums] + winInfo[WinCombo.PlumsNatural] * WinAmounts[WinCombo.PlumsNatural],7:N0}
+                Total Bells:     {winInfo[WinCombo.Bells] + winInfo[WinCombo.BellsNatural],9:N0} {winInfo[WinCombo.Bells] * WinAmounts[WinCombo.Bells] + winInfo[WinCombo.BellsNatural] * WinAmounts[WinCombo.BellsNatural],7:N0}
+                """;
+        }
+
+        return ret;
     }
     public string GetReelInfo()
     {
@@ -95,11 +108,10 @@ public abstract class MachineBase : IMachine
                                          IndexWheelParams,
                                          Path.Combine(AssetsPath, Reels[i].IndexWheel.Name + "Z.svg"));
         }
-        ReelStripRenderer.GenerateReelStrips(this,
-                                             NumCopies: NumStripCopies,
-                                             SvgPath: Path.Combine(AssetsPath, "reelstrips.svg"),
-                                             PngPath: Path.Combine(AssetsPath, "reelstrips.png"));
-
+        new ReelStripRenderer().GenerateReelStrips(this,
+                                                   NumCopies: NumStripCopies,
+                                                   SvgPath: Path.Combine(AssetsPath, "reelstrips.svg"),
+                                                   PngPath: Path.Combine(AssetsPath, "reelstrips.png"));
     }
     public Lazy<Dictionary<WinCombo, int>> WinTypeCounts { get; }
     protected virtual IndexWheelParams IndexWheelParams => throw new NotImplementedException();
@@ -108,7 +120,6 @@ public abstract class MachineBase : IMachine
     public int NumPossibleReelPositions { get; }
     [JsonIgnore]
     protected Lazy<int> Payout { get; }
-    //[JsonIgnore]
     public Lazy<float> PayoutPercent { get; }
     
     public void ThrowIfInvalid()
@@ -168,7 +179,7 @@ public abstract class MachineBase : IMachine
         }
         sb.AppendLine();
         sb.AppendLine($"Payout: {this.Payout.Value:N0}");
-        sb.AppendLine($"Payout percent: {this.PayoutPercent.Value * 100:N8}%");
+        sb.AppendLine($"Payout percent: {this.PayoutPercent.Value * 100:N5}%");
         sb.AppendLine($"Combinations: {this.NumPossibleReelPositions}");
 
         sb.AppendLine("Symbol Counts");
