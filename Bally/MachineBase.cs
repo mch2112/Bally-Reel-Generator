@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Runtime.InteropServices;
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace Bally;
@@ -16,6 +17,7 @@ public abstract class MachineBase : IMachine
         this.WinTypeCounts = new(GetWinTypeCounts);
         this.Payout = new(GetTotalPayout);
         this.PayoutPercent = new(() => this.Payout.Value / (float)NumPossibleReelPositions);
+        this.WinPercent = new(() => this.WinTypeCounts.Value.Where(v => v.Key != WinCombo.None).Sum(v => v.Value) / (float)NumPossibleReelPositions);
         this.Name = Name;
         this.WinAmounts = WinAmounts;
         this.WinAmounts[WinCombo.None] = 0;
@@ -42,12 +44,12 @@ public abstract class MachineBase : IMachine
     {
         var winInfo = WinTypeCounts.Value;
         var data = winInfo.Select(kvp => new
-                          {
-                              kvp.Key,
-                              PerWin = WinAmounts[kvp.Key],
-                              Count = kvp.Value,
-                              TypeValue = kvp.Value * WinAmounts[kvp.Key]
-                          })
+        {
+            kvp.Key,
+            PerWin = WinAmounts[kvp.Key],
+            Count = kvp.Value,
+            TypeValue = kvp.Value * WinAmounts[kvp.Key]
+        })
                           .Where(x => x.TypeValue > 0)
                           .OrderByDescending(x => x.PerWin)
                           .ToArray();
@@ -56,7 +58,7 @@ public abstract class MachineBase : IMachine
                            data.Select(win => $"{win.Key,-15} {win.PerWin,3} {win.Count,6:N0} {win.TypeValue,7:N0}"))
                + Environment.NewLine
                + $"TOTAL               {data.Sum(x => x.Count),6:N0} {data.Sum(x => x.TypeValue),7:N0}";
-    
+
         if (winInfo.ContainsKey(WinCombo.Oranges) && winInfo.ContainsKey(WinCombo.OrangesNatural))
         {
             ret += $"""
@@ -121,7 +123,7 @@ public abstract class MachineBase : IMachine
     [JsonIgnore]
     protected Lazy<int> Payout { get; }
     public Lazy<float> PayoutPercent { get; }
-    
+    public Lazy<float> WinPercent { get; }
     public void ThrowIfInvalid()
     {
         if (!this.Validate())
@@ -160,7 +162,14 @@ public abstract class MachineBase : IMachine
     {
         Name = this.Name,
         WinAmounts = this.WinAmounts,
-        Reels = this.Reels.Select(r => new ReelDescriptor() { IndexWheel = r.IndexWheel, SymbolMap = r.SymbolMap, Multiline = r.Multiline, ReelStripInfo = r.ReelStripInfo }).ToArray()
+        Reels = this.Reels
+                    .Select(r => new ReelDescriptor()
+                    {
+                        IndexWheel = r.IndexWheel,
+                        SymbolMap = r.SymbolMap,
+                        Multiline = r.Multiline,
+                        ReelStripInfo = r.ReelStripInfo
+                    }).ToArray()
     };
     public virtual string GetInfo(string? Caption = null)
     {
@@ -178,14 +187,15 @@ public abstract class MachineBase : IMachine
             sb.AppendLine(div2);
         }
         sb.AppendLine();
-        sb.AppendLine($"Payout: {this.Payout.Value:N0}");
+        sb.AppendLine($"Payout total:   {this.Payout.Value:N0}");
         sb.AppendLine($"Payout percent: {this.PayoutPercent.Value * 100:N5}%");
-        sb.AppendLine($"Combinations: {this.NumPossibleReelPositions}");
-
+        sb.AppendLine($"Win percent:    {this.WinPercent.Value * 100:N5}%");
+        sb.AppendLine($"Combinations:   {this.NumPossibleReelPositions}");
+        sb.AppendLine();
         sb.AppendLine("Symbol Counts");
         sb.AppendLine(this.GetSymbolCountTable());
         sb.AppendLine();
-        sb.AppendLine("Payout");
+        sb.AppendLine("Payout Table");
         sb.AppendLine(this.GetPayoutTable());
         sb.AppendLine();
         sb.AppendLine("Reel Info");
