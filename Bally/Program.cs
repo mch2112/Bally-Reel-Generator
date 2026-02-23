@@ -6,13 +6,15 @@ Console.WriteLine();
 
 var basePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Bally");
 
+
+go(new M952A(), "M952A", basePath, 3);
 //go(new MyM952A(), "My_M952", basePath, 2);
-//go(new MyM831ZZSH(), "My_M831", basePath, 2);
-//go(new M952A(), "M952A", basePath, 3);
+
 //go(new M831ZZSH(), "M831ZZSH", basePath, 3);
+//go(new MyM831ZZSH(), "My_M831", basePath, 2);
 
 //go(new M1114(), "M1114", basePath, 2);
-go(new MyM1114(), "My_M1114", basePath, 2);
+//go(new MyM1114(), "My_M1114", basePath, 2);
 
 
 static void go(MachineBase m, string Slug, string BasePath, int ReelStripCopies = 1)
@@ -40,4 +42,3 @@ void generateInsert()
         Path.Combine(basePath, "My_M952", "insert.svg"),
         Path.Combine(basePath, "My_M952", "insert.png"));
 }
-//MyM831ZZSH.Analyze(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Bally", "M831-Candidates"));

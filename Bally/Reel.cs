@@ -37,7 +37,7 @@ public class Reel
         });
     }
     public Reel(IndexWheelNumber IndexDiscNumber, bool Multiline, Symbol[] SymbolMap, string[]? ReelStripInfo = null)
-        : this(IndexWheel.GetIndexDisc(IndexDiscNumber), Multiline, SymbolMap, ReelStripInfo) { }
+        : this(IndexWheel.GetWheel(IndexDiscNumber), Multiline, SymbolMap, ReelStripInfo) { }
     public Reel(ReelDescriptor Descriptor) : this(Descriptor.IndexWheel, Descriptor.Multiline, Descriptor.SymbolMap, Descriptor.ReelStripInfo) { }
     public Symbol this[int Index] => this.Symbols[(Index + NumStops) % NumStops];
     private int GetPattern(int i) => ((int)this[i - 1] << 8) | ((int)this[i] << 4) | (int)this[i + 1];

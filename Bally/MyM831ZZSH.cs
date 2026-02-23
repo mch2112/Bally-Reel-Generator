@@ -8,15 +8,15 @@ public class MyM831ZZSH : M831ZZSH
     public MyM831ZZSH() : base("Mod-831ZZSH", customReels) { }
     private MyM831ZZSH(string Name, Reel Reel1, Reel Reel2, Reel Reel3) : base(Name, [Reel1, Reel2, Reel3]) { }
     private static readonly Reel[] customReels =
-                     [new Reel(IndexWheel.P168,
+                     [new Reel(IndexWheel.GetWheel(IndexWheelNumber.P168),
                                true,
                                SymbolSet.SplitStringToSymbols("ME BE PL BE BA PL CH OR SE OR"),
                                ["MOD-ZZ-3LPF-1", "BALLY MFG. CORP.", "9 , 10 , 2024", "M - 222 - 355 - Z"]),
-                      new Reel(IndexWheel.P168,
+                      new Reel(IndexWheel.GetWheel(IndexWheelNumber.P168),
                                true,
                                SymbolSet.SplitStringToSymbols("SE ME PL ME CH OR OR BE BA BE"),
                                ["MOD-ZZ-3LPF-2", "BALLY MFG. CORP.", "9 , 10 , 2024", "M - 222 - 356 - Z"]),
-                      new Reel(IndexWheel.P169,
+                      new Reel(IndexWheel.GetWheel(IndexWheelNumber.P169),
                                true,
                                SymbolSet.SplitStringToSymbols("PL ME BA ME OR BE PL BE SE BA"),
                                ["MOD-ZZ-3LPF-3", "BALLY MFG. CORP.", "9 , 10 , 2024", "M - 222 - 357 - Z"])];
@@ -89,7 +89,9 @@ public class MyM831ZZSH : M831ZZSH
 
         IEnumerable<MyM831ZZSH> analyze2()
         {
-            IndexWheel[] indexWheels = [IndexWheel.P168, IndexWheel.P168, IndexWheel.P169];
+            IndexWheel[] indexWheels = [IndexWheel.GetWheel(IndexWheelNumber.P168),
+                                        IndexWheel.GetWheel(IndexWheelNumber.P168),
+                                        IndexWheel.GetWheel(IndexWheelNumber.P169)];
             Analyzer<MyM831ZZSH> a = new();
 
             var sc = a.FindCandidateSymbolCounts(22,
@@ -160,7 +162,9 @@ public class MyM831ZZSH : M831ZZSH
                 //                            new IndexWheel("p168_mod_b", mod168b),
                 //                            new IndexWheel("p169_mod", mod169)];
 
-                IndexWheel[] indexWheels = [IndexWheel.P168, IndexWheel.P168, IndexWheel.P169];
+                IndexWheel[] indexWheels = [IndexWheel.GetWheel(IndexWheelNumber.P168),
+                                            IndexWheel.GetWheel(IndexWheelNumber.P168),
+                                            IndexWheel.GetWheel(IndexWheelNumber.P169)];
 
                 //IndexWheel[] indexWheels = [IndexWheel.P168, IndexWheel.P168, new IndexWheel("p169_mod", 9, 0, 8, 2, 7, 6, 3, 4, 5, 6, 3, 4, 5, 6, 3, 4, 5, 6, 3, 4, 5, 1)];  //20
                 var symbols = M831ZZSH.Symbols;

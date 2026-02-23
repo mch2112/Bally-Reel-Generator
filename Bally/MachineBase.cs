@@ -173,6 +173,8 @@ public abstract class MachineBase : IMachine
     };
     public virtual string GetInfo(string? Caption = null)
     {
+        Caption ??= this.Name;
+
         StringBuilder sb = new();
 
         sb.AppendLine(div);

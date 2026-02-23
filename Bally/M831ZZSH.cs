@@ -20,15 +20,15 @@ public class M831ZZSH : MultilineMachineBase, IMachine
             [WinCombo.Bars] = 100,
             [WinCombo.Sevens] = (1000 + 500 + 200) / 3
         };
-        StockReels = [new Reel(IndexWheel.P168,
+        StockReels = [new Reel(IndexWheel.GetWheel(IndexWheelNumber.P168),
                                true,
                                SymbolSet.SplitStringToSymbols("SE OR OR OR CH BA PL ME BE ME"),
                                ["ZZ - 3LPF - 1", "BALLY MFG. CORP.", "11 , 25 , 1973", "M - 222 - 355 - K"]),
-                      new Reel(IndexWheel.P168,
+                      new Reel(IndexWheel.GetWheel(IndexWheelNumber.P168),
                                true,
                                SymbolSet.SplitStringToSymbols("SE ME ME ME CH BA BE PL OR PL"),
                                ["ZZ - 3LPF - 2", "BALLY MFG. CORP.", "11 , 25 , 1973", "M - 222 - 356 - K"]),
-                      new Reel(IndexWheel.P169,
+                      new Reel(IndexWheel.GetWheel(IndexWheelNumber.P169),
                                true,
                                SymbolSet.SplitStringToSymbols("PL ME BA ME OR BE BE BE BE SE"),
                                ["ZZ - 3LPF - 3", "BALLY MFG. CORP.", "11 , 25 , 1973", "M - 222 - 357 - K"])];
